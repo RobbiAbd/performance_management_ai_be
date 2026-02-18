@@ -49,7 +49,7 @@ def get_performance_analytics(period: str) -> dict | None:
 
     # 2. Top performer (top 5 by total_score)
     cur.execute("""
-        SELECT e.id, e.full_name, ps.total_score, ps.performance_category
+        SELECT e.id, e.employee_code, e.full_name, ps.total_score, ps.performance_category
         FROM performance_summary ps
         JOIN employees e ON e.id = ps.employee_id
         WHERE ps.period = %s AND ps.total_score IS NOT NULL
@@ -59,16 +59,17 @@ def get_performance_analytics(period: str) -> dict | None:
     top_performers = [
         {
             "employee_id": row[0],
-            "full_name": row[1],
-            "total_score": float(row[2]) if row[2] else 0,
-            "performance_category": row[3] or "N/A",
+            "employee_code": row[1] or "",
+            "full_name": row[2],
+            "total_score": float(row[3]) if row[3] else 0,
+            "performance_category": row[4] or "N/A",
         }
         for row in cur.fetchall()
     ]
 
     # 3. Underperformer (bottom 5 by total_score)
     cur.execute("""
-        SELECT e.id, e.full_name, ps.total_score, ps.performance_category
+        SELECT e.id, e.employee_code, e.full_name, ps.total_score, ps.performance_category
         FROM performance_summary ps
         JOIN employees e ON e.id = ps.employee_id
         WHERE ps.period = %s AND ps.total_score IS NOT NULL
@@ -78,9 +79,10 @@ def get_performance_analytics(period: str) -> dict | None:
     underperformers = [
         {
             "employee_id": row[0],
-            "full_name": row[1],
-            "total_score": float(row[2]) if row[2] else 0,
-            "performance_category": row[3] or "N/A",
+            "employee_code": row[1] or "",
+            "full_name": row[2],
+            "total_score": float(row[3]) if row[3] else 0,
+            "performance_category": row[4] or "N/A",
         }
         for row in cur.fetchall()
     ]

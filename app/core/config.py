@@ -13,4 +13,9 @@ class Settings:
     OLLAMA_URL = os.getenv("OLLAMA_URL")
     MODEL_NAME = os.getenv("MODEL_NAME")
 
+    # JWT
+    JWT_SECRET = os.getenv("JWT_SECRET", "your-secret-key-change-in-production")
+    JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60"))
+
 settings = Settings()

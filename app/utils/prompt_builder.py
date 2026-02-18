@@ -24,17 +24,19 @@ Struktur output JSON (wajib mengikuti format ini):
 }}
 
 Keterangan:
-- summary: ringkasan performa singkat (max 2 paragraf). gunakan bahasa Indonesia.
+- summary: ringkasan performa singkat (max 2 paragraf).
 - achieved_kpi: [array] nama KPI yang mencapai/memenuhi target (contoh: ["Attendance Rate (95.00%)", "Task Completion Rate (95.00%)"]).
 - not_achieved_kpi: [array] nama KPI yang belum mencapai target (contoh: ["Attendance Rate (85.00%)", "Task Completion Rate (85.00%)"]).
-- recommendations: [array] berikan 2 rekomendasi konkret untuk meningkatkan performa {employee_name}. gunakan bahasa Indonesia.
-- motivation: 1 kalimat kata motivasi profesional untuk {employee_name} yang bisa dijadikan sebagai motivasi untuk meningkatkan performa. gunakan bahasa Indonesia.
+- recommendations: [array] berikan 2 rekomendasi konkret untuk meningkatkan performa {employee_name}.
+- motivation: 1 kalimat kata motivasi profesional untuk {employee_name} yang bisa dijadikan sebagai motivasi untuk meningkatkan performa.
 
 Aturan:
 1. Jawaban HANYA berisi JSON yang valid, tanpa markdown code block atau teks tambahan.
 2. Semua teks dalam bahasa Indonesia, profesional, dan sesuai data.
 3. Jangan gunakan kata saya atau aku.
 4. Berdasarkan data KPI: KPI tercapai jika achievement >= target yang diharapkan; belum tercapai jika di bawah target.
+5. Ganti nama pada summary, recommendations, dan motivation jadi kamu.
+6. Gunakan hanya bahasa Indonesia.
 
 Data Karyawan:
 Nama: {employee_name}

@@ -84,10 +84,34 @@ def _parse_ai_sections(ai_output: str):
     return ai_recommendation, ai_motivation
 
 
-def generate_performance(employee_id: int, period: str):
+def _get_employee_id_by_code(cur, employee_code: str) -> int | None:
+    """Resolve employee_code to employee id. Returns None if not found."""
+    cur.execute("SELECT id FROM employees WHERE employee_code = %s", (employee_code,))
+    row = cur.fetchone()
+    return row[0] if row else None
+
+
+def get_employee_code_by_id(employee_id: int) -> str | None:
+    """Resolve employee_id to employee_code. Returns None if not found."""
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT employee_code FROM employees WHERE id = %s", (employee_id,))
+    row = cur.fetchone()
+    cur.close()
+    conn.close()
+    return row[0] if row else None
+
+
+def generate_performance(employee_code: str, period: str):
 
     conn = get_connection()
     cur = conn.cursor()
+
+    employee_id = _get_employee_id_by_code(cur, employee_code)
+    if employee_id is None:
+        cur.close()
+        conn.close()
+        return None
 
     query = """
         SELECT e.full_name, k.kpi_name, a.target_value,
@@ -131,6 +155,7 @@ def generate_performance(employee_id: int, period: str):
             performance_category = EXCLUDED.performance_category,
             ai_recommendation = EXCLUDED.ai_recommendation,
             ai_motivation = EXCLUDED.ai_motivation,
+            generated_at = EXCLUDED.generated_at,
             updated_at = CURRENT_TIMESTAMP
     """
 
