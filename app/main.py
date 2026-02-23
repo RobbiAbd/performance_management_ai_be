@@ -12,6 +12,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def root():
+    return {"message": "API is running"}
+
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
 app.include_router(performance.router, prefix="/api/performance", tags=["Performance"])
 app.include_router(motivation.router, prefix="/api/motivation", tags=["Motivation"])
