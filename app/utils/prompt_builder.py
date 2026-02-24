@@ -19,7 +19,9 @@ Struktur output JSON (wajib mengikuti format ini):
   "summary": "string",
   "achieved_kpi": ["string"],
   "not_achieved_kpi": ["string"],
-  "recommendations": ["string"],
+  "kpi_improvement_suggestions": ["string"],
+  "training_rekomendation": ["string"],
+  "workload_adjustment_rekomendation": ["string"],
   "motivation": "string"
 }}
 
@@ -27,7 +29,9 @@ Keterangan:
 - summary: ringkasan performa singkat (max 2 paragraf).
 - achieved_kpi: [array] nama KPI yang mencapai/memenuhi target (contoh: ["Attendance Rate (95.00%)", "Task Completion Rate (95.00%)"]).
 - not_achieved_kpi: [array] nama KPI yang belum mencapai target (contoh: ["Attendance Rate (85.00%)", "Task Completion Rate (85.00%)"]).
-- recommendations: [array] berikan 2 rekomendasi konkret untuk meningkatkan performa {employee_name}.
+- kpi_improvement_suggestions: [array] berikan maksimal 2 rekomendasi konkret untuk meningkatkan performa KPI yang belum tercapai {employee_name}.
+- training_rekomendation: [array] berikan maksimal 2 training yang dibutuhkan untuk meningkatkan performa KPI yang belum tercapai {employee_name}.
+- workload_adjustment_rekomendation: [array] berikan maksimal 2 workload adjustment yang dibutuhkan untuk meningkatkan performa KPI {employee_name}.
 - motivation: 1 kalimat kata motivasi profesional untuk {employee_name} yang bisa dijadikan sebagai motivasi untuk meningkatkan performa.
 
 Aturan:
