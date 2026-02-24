@@ -3,9 +3,12 @@ Chatbot EP: konteks terbatas pada aplikasi Performance Management AI.
 History disimpan per user di tabel chat_history.
 """
 
+import logging
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 from app.core.database import get_connection
-from app.services.ai_service import chat_completion
+from app.services.ai_service import chat_via_generate
 
 # System prompt: batasi konteks hanya ke domain aplikasi
 CHAT_SYSTEM_PROMPT = """Anda adalah asisten chatbot dari aplikasi **Performance Management AI** (EP).
@@ -16,6 +19,7 @@ Konteks yang Anda bantu HANYA seputar:
 - Motivasi harian dan rekomendasi peningkatan performa
 - Analytics performa (rata-rata, top performer, underperformer)
 - Cara membaca/menginterpretasi hasil performa dan rekomendasi
+- Jawab jika ditanya tentang seputar HCM (Human Capital Management) dan Performance Management
 
 Aturan:
 1. Jawab dalam bahasa Indonesia, sopan dan profesional.
@@ -103,8 +107,9 @@ def send_message(user_id: int, user_message: str) -> dict | None:
         messages.append({"role": h["role"], "content": h["content"]})
 
     try:
-        assistant_content = chat_completion(messages)
-    except Exception:
+        assistant_content = chat_via_generate(messages)
+    except Exception as e:
+        logger.warning("Chat (generate) failed: %s", e, exc_info=True)
         assistant_content = "Maaf, terjadi gangguan saat memproses. Silakan coba lagi."
 
     assistant_content = (assistant_content or "").strip() or "Maaf, saya tidak dapat menghasilkan jawaban."

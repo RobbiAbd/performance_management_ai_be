@@ -1,7 +1,7 @@
 from datetime import datetime
 import psycopg2
 from app.core.database import get_connection
-from app.core.security import verify_password, create_access_token
+from app.core.security import verify_password, create_access_token, create_refresh_token, decode_refresh_token
 
 
 def get_user_by_username(username: str) -> dict | None:
@@ -58,9 +58,24 @@ def update_last_login(user_id: int):
     conn.close()
 
 
+def _token_payload(user: dict) -> dict:
+    return {"sub": str(user["id"]), "username": user["username"], "role_id": user["role_id"]}
+
+
+def _user_info(user: dict) -> dict:
+    return {
+        "id": user["id"],
+        "username": user["username"],
+        "full_name": user["full_name"],
+        "email": user["email"],
+        "role_id": user["role_id"],
+        "employee_id": user["employee_id"],
+    }
+
+
 def login(username: str, password: str) -> dict | None:
     """
-    Validate credentials and return token payload: { access_token, token_type, user }.
+    Validate credentials and return token payload: { access_token, refresh_token, token_type, user }.
     Returns None if invalid.
     """
     user = get_user_by_username(username)
@@ -69,18 +84,32 @@ def login(username: str, password: str) -> dict | None:
     if not verify_password(password, user["password_hash"]):
         return None
     update_last_login(user["id"])
-    token = create_access_token(
-        data={"sub": str(user["id"]), "username": user["username"], "role_id": user["role_id"]}
-    )
+    data = _token_payload(user)
+    access_token = create_access_token(data=data)
+    refresh_token = create_refresh_token(data=data)
     return {
-        "access_token": token,
+        "access_token": access_token,
+        "refresh_token": refresh_token,
         "token_type": "bearer",
-        "user": {
-            "id": user["id"],
-            "username": user["username"],
-            "full_name": user["full_name"],
-            "email": user["email"],
-            "role_id": user["role_id"],
-            "employee_id": user["employee_id"],
-        },
+        "user": _user_info(user),
+    }
+
+
+def refresh_tokens(refresh_token: str) -> dict | None:
+    """
+    Validasi refresh_token dan kembalikan access_token + refresh_token baru (rotation).
+    Return { access_token, refresh_token, token_type, user } atau None jika invalid.
+    """
+    payload = decode_refresh_token(refresh_token)
+    if not payload or "username" not in payload:
+        return None
+    user = get_user_by_username(payload["username"])
+    if not user:
+        return None
+    data = _token_payload(user)
+    return {
+        "access_token": create_access_token(data=data),
+        "refresh_token": create_refresh_token(data=data),
+        "token_type": "bearer",
+        "user": _user_info(user),
     }
