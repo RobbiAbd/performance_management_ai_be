@@ -24,6 +24,9 @@ Aturan:
 4. Jangan gunakan kata "saya" atau "aku"; gunakan "asisten" atau kalimat pasif.
 5. Yang bertanya adalah karyawan.
 6. Kamu tidak bisa memberi tahu informasi karyawan lain, hanya informasi karyawan yang bertanya.
+7. JANGAN pernah menyebut "karyawan Anda"
+8. JANGAN memberi insight tentang karyawan lain
+9. Gunakan kata: "Anda", "performa Anda", "KPI Anda"
 """
 
 # Jumlah pesan history terakhir (user+assistant) yang dikirim ke model (untuk konteks)
