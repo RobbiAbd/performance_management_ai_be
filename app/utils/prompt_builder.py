@@ -27,8 +27,8 @@ Struktur output JSON (wajib mengikuti format ini):
 
 Keterangan:
 - summary: ringkasan performa singkat (max 2 paragraf).
-- achieved_kpi: [array] nama KPI yang mencapai/memenuhi target (contoh: ["Attendance Rate (95.00%)", "Task Completion Rate (95.00%)"]).
-- not_achieved_kpi: [array] nama KPI yang belum mencapai target (contoh: ["Attendance Rate (85.00%)", "Task Completion Rate (85.00%)"]).
+- achieved_kpi: [array] nama KPI yang mencapai/memenuhi target (contoh: ["Attendance Rate: target=95.00%, actual=95.00%", "Task Completion Rate: target=95.00%, actual=95.00%"]).
+- not_achieved_kpi: [array] nama KPI yang belum mencapai target (contoh: ["Attendance Rate: target=95.00%, actual=85.00%", "Task Completion Rate: target=95.00%, actual=85.00%"]).
 - kpi_improvement_suggestions: [array] berikan maksimal 2 rekomendasi konkret untuk meningkatkan performa KPI yang belum tercapai {employee_name}.
 - training_rekomendation: [array] berikan maksimal 2 training yang dibutuhkan untuk meningkatkan performa KPI yang belum tercapai {employee_name}.
 - workload_adjustment_rekomendation: [array] berikan maksimal 2 workload adjustment yang dibutuhkan untuk meningkatkan performa KPI {employee_name}.
